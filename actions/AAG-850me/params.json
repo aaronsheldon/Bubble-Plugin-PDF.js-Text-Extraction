@@ -1,0 +1,43 @@
+{
+    "category": "plugins",
+    "display": "PDF Info",
+    "fields": {
+        "AAF": {
+            "caption": "Source PDF",
+            "doc": "PDF in base 64 to extract metadata from.",
+            "editor": "DynamicValue",
+            "name": "sourcepdf",
+            "rank": 1,
+            "value": "file"
+        },
+        "AAf": {
+            "caption": "Extract the embedded PDF info and metadata and return as formatted JSON.",
+            "editor": "Label",
+            "name": "information",
+            "rank": 0
+        }
+    },
+    "return_value": {
+        "AAE": {
+            "caption": "Metadata",
+            "is_list": false,
+            "name": "metadata",
+            "rank": 2,
+            "value": "text"
+        },
+        "AAd": {
+            "caption": "Document Information",
+            "name": "info",
+            "rank": 1,
+            "value": "text"
+        },
+        "AAe": {
+            "caption": "Page Count",
+            "name": "pagecount",
+            "rank": 0,
+            "value": "number"
+        }
+    },
+    "type": "server_side",
+    "use_packages": true
+}

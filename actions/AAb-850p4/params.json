@@ -1,0 +1,40 @@
+{
+    "category": "plugins",
+    "display": "Extract Page Text",
+    "fields": {
+        "AAa": {
+            "caption": "Source PDF",
+            "doc": "PDF in base 64 to extract text page from.",
+            "editor": "DynamicValue",
+            "long_text": true,
+            "name": "sourcepdf",
+            "rank": 1,
+            "value": "text"
+        },
+        "AAc": {
+            "caption": "Page Number",
+            "doc": "Page to extract text from.",
+            "editor": "DynamicValue",
+            "name": "pagenumber",
+            "rank": 2,
+            "value": "number"
+        },
+        "AAg": {
+            "caption": "Extract the text of a single page. Uses a geometric heuristic to reconstruct lines of text.",
+            "editor": "Label",
+            "name": "information",
+            "rank": 0
+        }
+    },
+    "return_value": {
+        "AAE": {
+            "caption": "Page Text",
+            "is_list": false,
+            "name": "pagetext",
+            "rank": 0,
+            "value": "text"
+        }
+    },
+    "type": "server_side",
+    "use_packages": true
+}

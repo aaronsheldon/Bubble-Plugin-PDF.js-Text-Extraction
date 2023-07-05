@@ -1,0 +1,32 @@
+{
+    "category": "plugins",
+    "display": "Extract All Text",
+    "fields": {
+        "AAD": {
+            "caption": "Source PDF",
+            "doc": "PDF in base 64 to extract text pages from.",
+            "editor": "DynamicValue",
+            "long_text": true,
+            "name": "sourcepdf",
+            "rank": 1,
+            "value": "text"
+        },
+        "AAh": {
+            "caption": "Extract all the text of all the pages to a list of one text for each page. Uses a geometric heuristic to reconstruct lines of text.",
+            "editor": "Label",
+            "name": "information",
+            "rank": 0
+        }
+    },
+    "return_value": {
+        "AAE": {
+            "caption": "Text Pages",
+            "is_list": true,
+            "name": "textpages",
+            "rank": 0,
+            "value": "text"
+        }
+    },
+    "type": "server_side",
+    "use_packages": true
+}

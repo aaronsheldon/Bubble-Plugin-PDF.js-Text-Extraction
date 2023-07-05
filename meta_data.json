@@ -1,0 +1,16 @@
+{
+    "categories": {
+        "0": "web scraping",
+        "1": "technical",
+        "2": "productivity",
+        "3": "data (things)"
+    },
+    "demo_page": "https://littlelambdas.com/pdfjs",
+    "description": "Thin wrapper for server side execution of the Node.js pdfjs-dist package maintained by Mozilla, exposing actions to extract text from a PDF.",
+    "image": "//s3.amazonaws.com/appforest_uf/f1617406677593x869100635994828300/Pdf-js_logo.svg.png",
+    "license": "open_source",
+    "link": "https://mozilla.github.io/pdf.js/",
+    "name": "PDF.js Text Extraction",
+    "plugin_instructions": "The plugin provides the following Server Side Actions:\n\n\"Extract All Text\" extract text from all the pages of the base 64 encoded PDF. Returns a list of strings containing the text on each page.\n\n\"PDF Info\" retrieve information and metadata from the base 64 encoded PDF. Returns the page count and strings containing the serialized JSON of the information and metadata.\n\n\"Extract Page Text\" extract the text from a specific page of the base 64 encoded PDF. Returns a string containing the extracted text.",
+    "sa_node_version": 14
+}

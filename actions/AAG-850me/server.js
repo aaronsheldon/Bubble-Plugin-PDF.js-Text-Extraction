@@ -1,21 +1,16 @@
-function(properties, context) {
+async function(properties, context) {
     
     // Backport to support headless service
-    var pdfutil = require("pdfjs-dist/legacy/build/pdf");
+    const pdfutil = require("pdfjs-dist/legacy/build/pdf");
     
     // Store the PDF bytes
-    var pdfbuffer = Buffer.from(properties.sourcepdf, "base64");
+    const pdfbuffer = Buffer.from(properties.sourcepdf, "base64");
     
     // Open the task
-    var pdftask = pdfutil.getDocument(pdfbuffer);
+    const pdftask = pdfutil.getDocument(pdfbuffer);
     
     // Instantiate the document
-    var promisepdf = pdftask.promise;
-    var pdfdoc = context.async(
-    	callback => promisepdf
-        .then(loadedpdf => callback(null, loadedpdf))
-        .catch(reason => callback(reason))
-    );
+    const pdfdoc = await pdftask.promise;
     
     // Send
     return {

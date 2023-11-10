@@ -1,13 +1,13 @@
-function(properties, context) {
+async function(properties, context) {
     
     // Backport to support headless service
-    var pdfutil = require("pdfjs-dist/legacy/build/pdf");
+    const pdfutil = require("pdfjs-dist/legacy/build/pdf");
     
     // Store the PDF bytes
-    var pdfbuffer = Buffer.from(properties.sourcepdf, "base64");
+    const pdfbuffer = Buffer.from(properties.sourcepdf, "base64");
     
     // Open the task
-    var pdftask = pdfutil.getDocument(
+    const pdftask = pdfutil.getDocument(
         { 
             data: pdfbuffer,
             standardFontDataUrl: "node_modules/pdfjs-dist/standard_fonts/"
@@ -15,63 +15,48 @@ function(properties, context) {
     );
     
     // Instantiate the document
-    var promisepdf = pdftask.promise;
-    var pdfdoc = context.async(
-    	callback => promisepdf
-        .then(loadedpdf => callback(null, loadedpdf))
-        .catch(reason => callback(reason))
-    );
+    const pdfdoc = await pdftask.promise;
 
     // Loop through the pages
-    var textpages = [];
-    var n = pdfdoc.numPages;
-    for (var i = 1; i <= n; i++) {
+    const textpages = [];
+    const n = pdfdoc.numPages;
+    for (let i = 1; i <= n; i++) {
         
         // Load the page
-        var promisepage = pdfdoc.getPage(i);
-        var pdfpage = context.async(
-            callback => promisepage
-            .then(extractedpage => callback(null, extractedpage))
-            .catch(reason => callback(reason))
-        );
+        const pdfpage = await pdfdoc.getPage(i);
 
         // Load the content
-        var promisetext = pdfpage.getTextContent();
-        var pagecontent = context.async(
-            callback => promisetext
-            .then(extractedtext => callback(null, extractedtext))
-            .catch(reason => callback(reason))
-        );
+        const pagecontent = await pdfpage.getTextContent();
 
         // Test for empty
-        var m = pagecontent.items.length;
+        const m = pagecontent.items.length;
         if (m < 1) {
             textpages.push("");
             continue;
         }
         
         // First token
-        var pagetext = pagecontent.items[0].str;
+        let pagetext = pagecontent.items[0].str;
 
         // Line dimensions
-        var lineheight = pagecontent.items[0].height;
-        var linetop = pagecontent.items[0].transform[5] + pagecontent.items[0].height;
-        var linebottom = pagecontent.items[0].transform[5];
-        var lineend = pagecontent.items[0].transform[4] + pagecontent.items[0].width;
-        var tokenstart = pagecontent.items[0].transform[4];
+        let lineheight = pagecontent.items[0].height;
+        let linetop = pagecontent.items[0].transform[5] + pagecontent.items[0].height;
+        let linebottom = pagecontent.items[0].transform[5];
+        let lineend = pagecontent.items[0].transform[4] + pagecontent.items[0].width;
+        let tokenstart = pagecontent.items[0].transform[4];
 
         // Loop through the tokens
-        for (var j = 1; j < m; j++) {
+        for (let j = 1; j < m; j++) {
 
             // Token dimensions
-            var nextheight = pagecontent.items[j].height || lineheight;
-            var nexttop = pagecontent.items[j].transform[5] + nextheight;
-            var nextbottom = pagecontent.items[j].transform[5];
-            var nextend = pagecontent.items[j].transform[4] + pagecontent.items[j].width;
-            var nextstart = pagecontent.items[j].transform[4];
+            let nextheight = pagecontent.items[j].height || lineheight;
+            let nexttop = pagecontent.items[j].transform[5] + nextheight;
+            let nextbottom = pagecontent.items[j].transform[5];
+            let nextend = pagecontent.items[j].transform[4] + pagecontent.items[j].width;
+            let nextstart = pagecontent.items[j].transform[4];
 
             // Accommodate whitespace bleed
-            var spacebleed = (-1 < pagetext.search(/\s$/g)) || (-1 < pagecontent.items[j].str.search(/^\s/g));
+            let spacebleed = (-1 < pagetext.search(/\s$/g)) || (-1 < pagecontent.items[j].str.search(/^\s/g));
             
             // Same line
             if ((linebottom <= nexttop) && (nextbottom <= linetop) && (tokenstart <= nextstart) && (lineend <= nextend || spacebleed)) {
